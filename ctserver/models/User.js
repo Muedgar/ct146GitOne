@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     },
     hqaddress: {
         type: String
+    },
+    roles: {
+        type: String,
+        enum: ['user','insurance'],
+        default: 'user'
     }
 });
 

@@ -1,6 +1,7 @@
 const User = require('../models/User');
-
+require("dotenv").config();
 const jwt = require('jsonwebtoken');
+
 
 // handle errors
 const handleErrors = (err) => {
@@ -34,43 +35,61 @@ if(err.message == 'incorrect password') {
 
 
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-    return jwt.sign({id},'net ninja secret', {expiresIn: maxAge});
+const createToken = (data) => {
+    return jwt.sign({data},process.env.JWT_SECRET, {expiresIn: maxAge});
 }
 
 
 
 
-module.exports.signup_post = async (req,res) => {
-    const {email,password,name,nationalId,phone,dob,address} = req.body;
+const signup_post = async (req,res) => {
+    let data = {};
     try {
-        const user = await User.create({email,password,name,nationalId,phone,dob,address});
+        const user = await User.create(req.body);
 
+        const token = createToken(user._id);
         // after creating a new user
         // create a jwt and send it in a cookie
-        const token = createToken(user._id);
+        data = {user: user, jwt: token};
+        console.log("trying to signup",data);
+        
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-        res.status(201).json({user: user._id});
-        // 
+       
+        
+        res.status(201).json({user: user, jwt: token});
+        //
     } catch (error) {
-        const errors = handleErrors(error);
-        res.status(400).json(errors);
+        let errors = handleErrors(error);
+        if(error.message === 'Expected "payload" to be a plain object.') {
+            errors = data;
+           
+            res.status(201).json(data);
+            return;
+        }
+            res.status(400).json(errors);
+        
+        
     }
 }
 
-module.exports.login_post = async(req, res) => {
+const login_post = async(req, res) => {
     const {email,password} = req.body;
     
     try {
         const user = await User.login(email, password);
         // after creating a new user
         // create a jwt and send it in a cookie
-        const token = createToken(user._id);
+        const token = createToken({id: user._id, roles: user.roles});
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-        res.status(200).json({user: {email: user.email,tier: user.tier}, status: 'user logged in'});
+        res.status(200).json({user, status: 'user logged in'});
     } catch (error) {
         const errors = handleErrors(error);
         res.status(400).json({errors});
     }
 }
 
+
+module.exports = {
+    signup_post,
+    login_post
+}
