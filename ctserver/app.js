@@ -60,10 +60,10 @@ const PORT = process.env.PORT;
 const MONGO = process.env.MONGO_URI;
 
 const startApp =async (P,M) => {
-    
+        let port = P || 5000;
        try {
            let conn =await mongoose.connect(M,{family:4},{ useNewUrlParser: true, useUnifiedTopology: true })
-                    .then((result) => app.listen(P,'127.0.0.1',()=>console.log("connected and server running...")))
+                    .then((result) => app.listen(port,'127.0.0.1',()=>console.log("connected and server running...")))
                     .catch((err) => console.log(err));
        } catch (error) {
            
