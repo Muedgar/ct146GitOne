@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const app = express();
-app.use(express.static(path.join(__dirname,'../ctui','build')));
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -22,10 +22,12 @@ app.use(appRoutes);
 let LOGGEDIN = false;
 let CURRENTROLE = false;
 
-
-app.get('*', (req,res)=> {
-    res.sendFile(path.resolve(__dirname,'../ctui','build','index.html'));
-});
+if(process.env.NODE_ENV=="production") {
+    app.use(express.static(path.join(__dirname,'../ctui','build')));
+    app.get('*', (req,res)=> {
+        res.sendFile(path.resolve(__dirname,'../ctui','build','index.html'));
+    }); 
+}
 
 
 app.get('/setLoggedIn/:role', (req,res)=> {
@@ -63,7 +65,7 @@ const startApp =async (P,M) => {
     
        try {
            let conn =await mongoose.connect(M,{family:4},{ useNewUrlParser: true, useUnifiedTopology: true })
-                    .then((result) => app.listen(P,'127.0.0.1',()=>console.log("connected and server running...")))
+                    .then((result) => app.listen(P,'0.0.0.0',()=>console.log("connected and server running...")))
                     .catch((err) => console.log(err));
        } catch (error) {
            
