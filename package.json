@@ -6,7 +6,7 @@
     "scripts": {
       "start": "node ctserver/app.js",
       "dev": "nodemon ctserver/app.js",
-      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ctui"
+      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install ctui"
     },
     "keywords": [],
     "author": "",
