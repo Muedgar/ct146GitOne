@@ -1,1 +1,1 @@
-web: node ctserver/app.js
+web: node app.js
