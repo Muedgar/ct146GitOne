@@ -1,6 +1,6 @@
 const express = require("express");
-const authRoutes = require("./routes/authRoutes");
-const appRoutes = require("./routes/appRoutes");
+const authRoutes = require("./ctserver/routes/authRoutes");
+const appRoutes = require("./ctserver/routes/appRoutes");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -22,10 +22,10 @@ app.use(appRoutes);
 let LOGGEDIN = false;
 let CURRENTROLE = false;
 
-if(process.env.NODE_ENV=="production") {
-    app.use(express.static(path.join(__dirname,'../ctui','build')));
+if(process.env.NODE_ENV==="production") {
+    app.use(express.static('ctui/build'));
     app.get('*', (req,res)=> {
-        res.sendFile(path.resolve(__dirname,'../ctui','build','index.html'));
+        res.sendFile(path.resolve(__dirname,'ctui','build','index.html'));
     }); 
 }
 
