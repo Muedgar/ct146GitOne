@@ -65,7 +65,7 @@ const startApp =async (P,M) => {
     
        try {
            let conn =await mongoose.connect(M,{family:4},{ useNewUrlParser: true, useUnifiedTopology: true })
-                    .then((result) => app.listen(P,'0.0.0.0',()=>console.log("connected and server running...")))
+                    .then((result) => app.listen(P,()=>console.log("connected and server running...")))
                     .catch((err) => console.log(err));
        } catch (error) {
            
