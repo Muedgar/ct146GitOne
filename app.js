@@ -22,12 +22,10 @@ app.use(appRoutes);
 let LOGGEDIN = false;
 let CURRENTROLE = false;
 
-if(process.env.NODE_ENV==="production") {
+
     app.use(express.static(path.join('ctui','build')));
-    app.get('*', (req,res)=> {
-        res.sendFile(path.join(__dirname,'ctui','build','index.html'));
-    }); 
-}
+    
+
 
 
 app.get('/setLoggedIn/:role', (req,res)=> {
@@ -37,6 +35,7 @@ app.get('/setLoggedIn/:role', (req,res)=> {
 });
 
 app.get('/getLoggedIn', (req,res)=> {
+    console.log("getting called for checking currently logged in");
     res.status(200).json({status: LOGGEDIN, role: CURRENTROLE});
 });
 
@@ -51,12 +50,14 @@ app.get('/logout',(req,res)=> {
         console.log("trying to log out...");
         res.clearCookie('jwt');
         res.redirect('/removeLoggedIn');
-        res.status(100).json({status:"redirect to sign up"});
+         res.status(200).json({status:"redirect to sign up"});
     }catch(error) {
         console.log(error.message);
     }
 });
-
+app.get('*', (req,res)=> {
+    res.sendFile(path.join(__dirname,'ctui','build','index.html'));
+}); 
 
 const PORT = process.env.PORT;
 const MONGO = process.env.MONGO_URI;
