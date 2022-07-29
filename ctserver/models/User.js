@@ -37,6 +37,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    roles: {
+        type: String,
+        enum: ['user','insurance'],
+        default: 'user'
+    },
     insurancefrom: {
         type: String
     },
@@ -52,10 +57,13 @@ const userSchema = new mongoose.Schema({
     hqaddress: {
         type: String
     },
-    roles: {
+    status: {
         type: String,
-        enum: ['user','insurance'],
-        default: 'user'
+        enum: ['approved','pending','rejected'],
+        default: 'pending'
+    },
+    feedBack: {
+        type: String,
     }
 });
 

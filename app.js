@@ -1,12 +1,14 @@
 const express = require("express");
 const authRoutes = require("./ctserver/routes/authRoutes");
 const appRoutes = require("./ctserver/routes/appRoutes");
+const problemSolving = require("./ctserver/routes/problemSolvingRoutes");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
+const swaggerUI = require("swagger-ui-express");
+const docs = require("./ctserver/docs");
 const app = express();
 
 app.use(cors());
@@ -16,7 +18,9 @@ app.use(cookieParser());
 
 app.use(authRoutes);
 app.use(appRoutes);
+app.use(problemSolving);
 
+app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(docs));
 
 
 let LOGGEDIN = false;
@@ -55,6 +59,8 @@ app.get('/logout',(req,res)=> {
         console.log(error.message);
     }
 });
+
+
 app.get('*', (req,res)=> {
     res.sendFile(path.join(__dirname,'ctui','build','index.html'));
 }); 

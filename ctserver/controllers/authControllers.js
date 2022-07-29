@@ -66,7 +66,7 @@ const signup_post = async (req,res) => {
             res.status(201).json(data);
             return;
         }
-            res.status(400).json(errors);
+            res.status(500).json(errors);
         
         
     }
