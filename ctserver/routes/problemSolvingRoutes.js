@@ -1,21 +1,27 @@
 const {Router} = require("express");
 
 
-
-const {userAllRequests,userRequest, feedBackToUser} = require("../controllers/insuranceDashboard");
-const {userRequestToInsurance, userFeedBackFromInsurance} = require("../controllers/userDashboard");
-
 const problemSolving = Router();
 
+const {addUserRequest,getAllUsers,
+    getOneUser,
+    getAllRequests,
+    approveRequest,
+    rejectRequest,
+    createFeedBack
+    } = require("../controllers/userRequest");
 // user routes
-problemSolving.route('/userDashboard/:id').get(userFeedBackFromInsurance).put(userRequestToInsurance);
+problemSolving.route('/user/makeRequest/:id').post(addUserRequest);
+problemSolving.get('/user/makeRequest/getAllUsers',getAllUsers);
+problemSolving.get('/user/makeRequest/getAllRequests',getAllRequests);
+problemSolving.get('/user/makeRequest/getOneUser/:id',getOneUser);
 
-// insurance routes
-problemSolving.route('/insuranceDashboard/').get(userAllRequests);
-problemSolving.route('/insuranceDashboard/userRequest/:id').put(userRequest);
+// approve or reject
 
-problemSolving.route('/insuranceDashboard/feedBackToUser/:id').put(feedBackToUser);
+problemSolving.put('/user/makeRequest/approve/:id',approveRequest);
+problemSolving.put('/user/makeRequest/reject/:id',rejectRequest);
 
-
+// handle feedback
+problemSolving.post('/user/makeRequest/createFeedback',createFeedBack);
 
 module.exports = problemSolving;

@@ -4,6 +4,7 @@ const {isEmail} = require("validator");
 
 const bcrypt = require("bcrypt");
 
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -42,28 +43,8 @@ const userSchema = new mongoose.Schema({
         enum: ['user','insurance'],
         default: 'user'
     },
-    insurancefrom: {
-        type: String
-    },
-    insuranceto: {
-        type: String
-    },
-    scheduledate: {
-        type: String
-    },
-    hourschedule: {
-        type: String
-    },
     hqaddress: {
         type: String
-    },
-    status: {
-        type: String,
-        enum: ['approved','pending','rejected'],
-        default: 'pending'
-    },
-    feedBack: {
-        type: String,
     }
 });
 

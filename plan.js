@@ -1,8 +1,14 @@
 /*
-Finish back end
-1.Documentation (1 route done, )
-2.Show progress (2 routes on user dashboard, 2 routes on insurance dashboard) (done)
-3.Test routes (done)
-Integrate front end and back end
-Deploy to heroku
+Finish front end landing page
+page 1: nav bar + responsive, hero section + responsive
+
+Finish front end dashboard 1
+
+Finish front end dashboard 2
+
+Finish back end dashboard 1
+
+Finish back end dashboard 2
+
+Implement full authentication
 */
